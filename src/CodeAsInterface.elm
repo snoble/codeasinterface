@@ -87,14 +87,14 @@ textToDocument : Document Msg -> String -> Document Msg
 textToDocument alt text =
     case HP.run text of
         Result.Err _ ->
-            { alt | title = "err" }
+            alt
 
         Result.Ok lst ->
             let
                 body =
                     lst |> extendAttributes (addSpecialAttrToSelf text) |> toVirtualDom toAttribute
             in
-            { body = body, title = "good" }
+            { alt | body = body }
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
