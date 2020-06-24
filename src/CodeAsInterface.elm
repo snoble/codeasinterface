@@ -24,7 +24,11 @@ init =
     \_ ->
         let
             textarea =
-                "<textarea id=\"self\"></textarea>"
+                """<h1>Code As Interface</h1>
+<textarea id="self" style="width: 90%; height: 10em"></textarea>
+<div>Try editing the html in the textarea.</div>
+<div><a href="https://github.com/snoble/codeasinterface">Source</a>.</div>
+"""
 
             document =
                 textToDocument (Document "" []) textarea
