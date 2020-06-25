@@ -32,7 +32,7 @@ main =
 
                     Just _ ->
                         Time.every 200 SaveTextArea
-        , onUrlRequest = \_ -> Noop
+        , onUrlRequest = UrlRequestMsg
         , onUrlChange = \_ -> Noop
         }
 
@@ -70,6 +70,7 @@ type Msg
     | Noop
     | SaveTextArea Posix
     | SaveUnsaved Posix
+    | UrlRequestMsg Browser.UrlRequest
 
 
 extendAttributes : (String -> List HP.Attribute -> List HP.Node -> ( List HP.Attribute, List HP.Node )) -> List HP.Node -> List HP.Node
@@ -157,6 +158,14 @@ update msg model =
 
         Noop ->
             ( model, Cmd.none )
+
+        UrlRequestMsg urlRequest ->
+            case urlRequest of
+                Browser.External href ->
+                    ( model, Browser.Navigation.load href )
+
+                Browser.Internal url ->
+                    ( model, Browser.Navigation.load (Url.toString url) )
 
         SaveUnsaved t ->
             ( { model | unsavedAt = Just (model.unsavedAt |> Maybe.withDefault t) }, Cmd.none )
